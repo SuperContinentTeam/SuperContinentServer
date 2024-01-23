@@ -9,9 +9,11 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    game_state.cpp \
     main.cpp
 
 HEADERS += \
+    game_state.h \
     websocket_server.h
 
 FORMS +=
