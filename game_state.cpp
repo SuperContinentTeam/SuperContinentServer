@@ -4,7 +4,9 @@ GameState::GameState(quint8 wSize):QObject(nullptr)
 {
     this->worldSize = wSize;
 
-
+    this->gsThread = new QThread(this);
+    this->moveToThread(this->gsThread);
+    this->gsThread->start();
 }
 
 GameState::~GameState(){}
@@ -19,12 +21,34 @@ void GameState::show_current_status(){
 }
 
 void GameState::run() {
-    while(!this->isPause) {
-        if(this->isEnd) break;
+    while(true) {
+        if(this->status == GameState::Status::END) break;
+        if(this->status == GameState::Status::RUNING) {
+            this->next_state();
+            this->show_current_status();
+        }
 
-        this->next_state();
-        this->show_current_status();
-        QThread::msleep(1000);
+        QThread::sleep(1);
     }
+}
+
+void GameState::updateStatus(quint8 s)
+{
+    switch (s) {
+    case 1:
+        // RUNNING
+        this->status = GameState::Status::RUNING;
+        break;
+    case 2:
+        // PAUSE
+        this->status = GameState::Status::PAUSE;
+        break;
+    default:
+        // END
+        this->status = GameState::Status::END;
+        break;
+    }
+
+
 }
 

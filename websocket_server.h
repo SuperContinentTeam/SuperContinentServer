@@ -45,6 +45,12 @@ private slots:
         QString peer = this->get_peer(qobject_cast<QWebSocket*>(sender()));
         QString msg = QString("%1 said: %2").arg(peer, message);
 
+        if(msg == "start") {
+            emit changeStatus(1);
+        }else{
+            emit changeStatus(2);
+        }
+
         qInfo() << msg;
     }
 
@@ -57,7 +63,7 @@ private slots:
     }
 
 signals:
-    void readyStart();
+    void changeStatus(quint8);
 };
 
 

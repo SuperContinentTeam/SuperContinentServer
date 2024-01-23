@@ -11,11 +11,7 @@ int main(int argc, char *argv[])
     SCServerPtr scServer(new SuperContinentServer());
     GameStatePtr gsPtr(new GameState(10));
 
-    QObject::connect(scServer.get(), &SuperContinentServer::readyStart, gsPtr.get(), &GameState::run);
-
-    QThread *gsThread = new QThread;
-    gsPtr->moveToThread(gsThread);
-    gsThread->start();
+    QObject::connect(scServer.get(), &SuperContinentServer::changeStatus, gsPtr.get(), &GameState::updateStatus);
 
     return app.exec();
 }
