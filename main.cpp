@@ -1,9 +1,10 @@
+#include<QApplication>
 #include"websocket_server.h"
 
-//int main(int argc, char *argv[])
-int main()
+int main(int argc, char *argv[])
 {
+    QApplication app(argc, argv);
     SuperContinentServer *sc_server = new SuperContinentServer();
-    qDebug() << sc_server->print_connect();
-    return 0;
+
+    return app.exec();
 }

@@ -14,7 +14,7 @@ class SuperContinentServer: public QObject
     Q_OBJECT
 
     QWSServerPtr qwsServerPtr;
-    QList<QWSptr> clients;
+    QMap<QString, QWSptr> clientsMap;
     uint16_t port;
 
     uint16_t gen_rand_port()
@@ -31,15 +31,48 @@ public:
         while(!connect_success)
         {
             this->port = this->gen_rand_port();
-            connect_success = this->qwsServerPtr->listen(QHostAddress::Any, this->port);
+            connect_success = this->qwsServerPtr->listen(QHostAddress::AnyIPv4, this->port);
         }
+        qInfo() << QString("Listening on %1").arg(this->print_connect());
 
+        connect(qwsServerPtr.get(), SIGNAL(newConnection()), this, SLOT(on_connection()));
     }
 
     QString print_connect()
     {
         QString address = this->qwsServerPtr->serverAddress().toString();
         return QString("%1:%2").arg(address).arg(this->port);
+    }
+
+    QString client_address(QWSptr ws)
+    {
+        return QString("%1:%2").arg(ws->peerAddress().toString()).arg(ws->peerPort());
+    }
+
+private slots:
+    void on_connection()
+    {
+        QWSptr sock(this->qwsServerPtr->nextPendingConnection());
+        QString peerAddressHost = this->client_address(sock);
+        qInfo() << "New connection: " << peerAddressHost;
+
+        connect(sock.get(), SIGNAL(textMessageReceived(QString)),this, SLOT(processTextMessage(QString)));
+        connect(sock.get(), SIGNAL(disconnected()), this, SLOT(socketDisconnected()));
+
+        this->clientsMap.insert(peerAddressHost, sock);
+    }
+
+    void processTextMessage(const QString& message)
+    {
+        QWebSocket *c = qobject_cast<QWebSocket*>(sender());
+        QString peer = QString("%1:%2").arg(c->peerAddress().toString()).arg(c->peerPort());
+        QString msg = QString("%1 said: %2").arg(peer).arg(message);
+        qInfo() << msg;
+    }
+
+    void socketDisconnected()
+    {
+        qInfo() << "Client disconnect";
     }
 };
 
