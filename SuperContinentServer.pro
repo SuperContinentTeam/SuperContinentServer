@@ -10,10 +10,12 @@ CONFIG += c++17
 
 SOURCES += \
     game_state.cpp \
-    main.cpp
+    main.cpp \
+    state_worker.cpp
 
 HEADERS += \
     game_state.h \
+    state_worker.h \
     websocket_server.h
 
 FORMS +=

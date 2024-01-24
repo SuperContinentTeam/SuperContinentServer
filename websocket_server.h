@@ -13,13 +13,15 @@ class SuperContinentServer: public QObject{
 
     QWSServerPtr qwsServerPtr;
     QMap<QString, QWSptr> clientsMap;
-    uint16_t port = 65530;
+    QString host;
+    quint16 port;
 
 public:
-    SuperContinentServer():
-        qwsServerPtr(new QWebSocketServer(QString("SuperContinentServer"), QWebSocketServer::NonSecureMode))
+    SuperContinentServer(QString host=QString("0.0.0.0"), quint16 port=65530):
+        qwsServerPtr(new QWebSocketServer(QString("SuperContinentServer"), QWebSocketServer::NonSecureMode)),
+        host(host), port(port)
     {
-        this->qwsServerPtr->listen(QHostAddress(QString("0.0.0.0")), this->port);
+        this->qwsServerPtr->listen(QHostAddress(this->host), this->port);
         qInfo() << QString("Listening on 0.0.0.0:%1").arg(this->port);
         connect(qwsServerPtr.get(), &QWebSocketServer::newConnection, this, &SuperContinentServer::on_connection);
     }

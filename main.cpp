@@ -3,6 +3,7 @@
 
 #include"websocket_server.h"
 #include"game_state.h"
+#include"state_worker.h"
 
 int main(int argc, char *argv[])
 {
@@ -11,7 +12,12 @@ int main(int argc, char *argv[])
     SCServerPtr scServer(new SuperContinentServer());
     GameStatePtr gsPtr(new GameState(10));
 
-    QObject::connect(scServer.get(), &SuperContinentServer::changeStatus, gsPtr.get(), &GameState::updateStatus);
+    StateWorker *sw = new StateWorker();
+    sw->setGameStatePtr(gsPtr);
+
+    QObject::connect(scServer.get(), &SuperContinentServer::changeStatus, sw, &StateWorker::updateGameStatus);
+
+    sw->start();
 
     return app.exec();
 }

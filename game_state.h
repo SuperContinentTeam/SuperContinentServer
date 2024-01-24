@@ -8,7 +8,6 @@
 class GameState: public QObject
 {
     Q_OBJECT
-    QThread *gsThread;
 
 public:
     quint32 tick = 0;       // 时间刻
@@ -26,11 +25,10 @@ public:
     Status status = Status::INIT;
 
     void next_state();
-    void show_current_status();
+    void display();
 
 public slots:
     void updateStatus(quint8);
-    void run();
 };
 
 typedef std::shared_ptr<GameState> GameStatePtr;
