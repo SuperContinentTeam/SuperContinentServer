@@ -3,13 +3,17 @@
 
 #include <QObject>
 #include <QThread>
+#include <QJsonObject>
 #include <QJsonDocument>
+#include <QJsonValue>
 
 #include "game_state.h"
+
 
 class StateWorker : public QThread
 {
     GameStatePtr gsPtr;
+
 public:
     explicit StateWorker();
 
@@ -30,7 +34,10 @@ public:
     }
 
 private:
-    void updateGameStatus(QString);
+    // 更新状态机的运行状态
+    void updateGameStatus(const std::string&);
+    // 玩家动向（加入/离开）
+    void playerAction(const QJsonValue&);
 
 public slots:
     void textCommandExecuater(QString, QString);

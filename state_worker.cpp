@@ -1,5 +1,4 @@
 #include "state_worker.h"
-#include "qjsonobject.h"
 
 
 StateWorker::StateWorker():QThread(nullptr){}
@@ -20,32 +19,37 @@ void StateWorker::textCommandExecuater(QString peer, QString message)
 
     QJsonObject obj = doc.object();
 
-    QString op = obj.value(QString("op")).toString();
+    std::string op = obj.value(QString("op")).toString().toStdString();
     QJsonValue body = obj.value(QString("body"));
 
     qDebug() << "Op: " << op;
     qDebug() << "Body:" << body;
 
-    if(!op.compare("updateStatus")) {
-        this->updateGameStatus(body.toString());
+    if(op == "updateStatus") {
+        this->updateGameStatus(body.toString().toStdString());
     }
 }
 
 
-void StateWorker::updateGameStatus(QString body)
+void StateWorker::updateGameStatus(const std::string& body)
 {
-    if(!body.compare("start")) {
+    if(body == "start") {
         this->gsPtr->status = GameState::Status::RUNING;
         return;
     }
 
-    if(!body.compare("pause")) {
+    if(body == "pause") {
         this->gsPtr->status = GameState::Status::PAUSE;
         return;
     }
 
-    if(!body.compare("end")) {
+    if(body == "") {
         this->gsPtr->status = GameState::Status::END;
         return;
     }
+}
+
+void StateWorker::playerAction(const QJsonValue &)
+{
+
 }
