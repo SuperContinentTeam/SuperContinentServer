@@ -12,9 +12,7 @@ class StateWorker : public QThread
 public:
     explicit StateWorker();
 
-    void setGameStatePtr(GameStatePtr gsPtr) {
-        this->gsPtr = gsPtr;
-    }
+    void setGameStatePtr(GameStatePtr gsPtr);
 
     void run() override {
         qDebug() << "状态机线程已启动";

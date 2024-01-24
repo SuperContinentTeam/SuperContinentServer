@@ -26,9 +26,11 @@ void GameState::updateStatus(quint8 s){
         // PAUSE
         this->status = GameState::Status::PAUSE;
         break;
-    default:
+    case 0:
         // END
         this->status = GameState::Status::END;
+        break;
+    default:
         break;
     }
 }

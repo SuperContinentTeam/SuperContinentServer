@@ -9,8 +9,12 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    SCServerPtr scServer(new SuperContinentServer());
-    GameStatePtr gsPtr(new GameState(10));
+    /* 以后用UI来设置的变量 */
+    quint16 mPort = 65531;
+    quint8 mWorldSize = 10;
+
+    SCServerPtr scServer(new SuperContinentServer(mPort));
+    GameStatePtr gsPtr(new GameState(mWorldSize));
 
     StateWorker *sw = new StateWorker();
     sw->setGameStatePtr(gsPtr);
