@@ -30,7 +30,7 @@ private slots:
     void socketDisconnected();
 
 signals:
-    void changeStatus(quint8);
+    void sendTextCommand(QString, QString);
 };
 
 

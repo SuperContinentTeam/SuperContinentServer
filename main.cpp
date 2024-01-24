@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
     StateWorker *sw = new StateWorker();
     sw->setGameStatePtr(gsPtr);
 
-    QObject::connect(scServer.get(), &SuperContinentServer::changeStatus, sw, &StateWorker::updateGameStatus);
+    QObject::connect(scServer.get(), &SuperContinentServer::sendTextCommand, sw, &StateWorker::textCommandExecuater);
 
     sw->start();
 

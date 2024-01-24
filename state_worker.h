@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QThread>
+#include <QJsonDocument>
 
 #include "game_state.h"
 
@@ -28,8 +29,12 @@ public:
         this->exec();
     }
 
+private:
+    void updateGameStatus(QString);
+
 public slots:
-    void updateGameStatus(quint8 s);
+    void textCommandExecuater(QString, QString);
+
 
 };
 

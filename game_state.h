@@ -26,9 +26,6 @@ public:
 
     void next_state();
     void display();
-
-public slots:
-    void updateStatus(quint8);
 };
 
 typedef std::shared_ptr<GameState> GameStatePtr;

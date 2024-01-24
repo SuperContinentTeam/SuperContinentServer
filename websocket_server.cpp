@@ -28,17 +28,16 @@ void SuperContinentServer::onConnection()
 void SuperContinentServer::processTextMessage(const QString &message)
 {
     QString peer = this->get_peer(qobject_cast<QWebSocket*>(sender()));
-    QString msg = QString("%1 said: %2").arg(peer, message);
 
-    if(!message.compare("#start")) {
-        emit changeStatus(1);
-    }else if(!message.compare("#pause")) {
-        emit changeStatus(2);
-    }else if(!message.compare("#end")) {
-        emit changeStatus(0);
-    }
+    emit this->sendTextCommand(peer, message);
 
-    qInfo() << msg;
+    // if(!message.compare("#start")) {
+    //     emit this->changeStatus(1);
+    // }else if(!message.compare("#pause")) {
+    //     emit this->changeStatus(2);
+    // }else if(!message.compare("#end")) {
+    //     emit this->changeStatus(0);
+    // }
 }
 
 void SuperContinentServer::socketDisconnected()
