@@ -10,4 +10,6 @@ public:
     QString peer;
 };
 
+typedef std::shared_ptr<Player> PlayerPtr;
+
 #endif // PLAYER_H

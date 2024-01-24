@@ -18,3 +18,13 @@ void GameState::display(){
 
 
 
+void GameState::playerJoin(QString peer, PlayerPtr player)
+{
+    this->playerMap.insert(peer, player);
+}
+
+
+void GameState::playerLeave(QString peer)
+{
+    this->playerMap.remove(peer);
+}

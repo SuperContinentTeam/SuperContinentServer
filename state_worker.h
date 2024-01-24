@@ -37,7 +37,7 @@ private:
     // 更新状态机的运行状态
     void updateGameStatus(const std::string&);
     // 玩家动向（加入/离开）
-    void playerAction(const QJsonValue&);
+    void playerAction(const QString&, const QJsonObject&);
 
 public slots:
     void textCommandExecuater(QString, QString);

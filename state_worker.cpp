@@ -19,14 +19,18 @@ void StateWorker::textCommandExecuater(QString peer, QString message)
 
     QJsonObject obj = doc.object();
 
-    std::string op = obj.value(QString("op")).toString().toStdString();
-    QJsonValue body = obj.value(QString("body"));
+    std::string op = obj.value("op").toString().toStdString();
+    QJsonValue body = obj.value("body");
 
     qDebug() << "Op: " << op;
     qDebug() << "Body:" << body;
 
     if(op == "updateStatus") {
         this->updateGameStatus(body.toString().toStdString());
+    }
+
+    if(op == "playerAction") {
+        this->playerAction(peer, body.toObject());
     }
 }
 
@@ -49,7 +53,16 @@ void StateWorker::updateGameStatus(const std::string& body)
     }
 }
 
-void StateWorker::playerAction(const QJsonValue &)
+void StateWorker::playerAction(const QString& peer, const QJsonObject& body)
 {
+    std::string action = body.value("action").toString().toStdString();
+    if(action == "join") {
+        QString name = body.value("name").toString();
+        PlayerPtr player(new Player(name, peer));
+        this->gsPtr->playerJoin(peer, player);
+    }
 
+    if(action == "leave") {
+        this->gsPtr->playerLeave(peer);
+    }
 }
