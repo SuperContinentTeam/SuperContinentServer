@@ -1,3 +1,4 @@
+
 #include"websocket_server.h"
 
 SuperContinentServer::SuperContinentServer(quint16 port):        qwsServerPtr(new QWebSocketServer(QString("SuperContinentServer"), QWebSocketServer::NonSecureMode)),
@@ -47,4 +48,12 @@ void SuperContinentServer::socketDisconnected()
     qInfo() << QString("Client(%1) disconnect").arg(peer);
 
     this->clientsMap.remove(peer);
+}
+
+void SuperContinentServer::boardcast(const QString &message)
+{
+    qDebug() << "收到信号, 准备广播消息";
+    for(QWSptr qwsPtr: this->clientsMap.values()) {
+        qwsPtr->sendTextMessage(message);
+    }
 }

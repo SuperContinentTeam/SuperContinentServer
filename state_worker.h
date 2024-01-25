@@ -12,6 +12,7 @@
 
 class StateWorker : public QThread
 {
+    Q_OBJECT
     GameStatePtr gsPtr;
 
 public:
@@ -35,14 +36,17 @@ public:
 
 private:
     // 更新状态机的运行状态
-    void updateGameStatus(const std::string&);
+    void updateGameStatus(const std::string &body);
     // 玩家动向（加入/离开）
-    void playerAction(const QString&, const QJsonObject&);
+    void playerAction(const QString &peer, const QJsonObject &body);
+    // 聊天消息
+    void chatMessage(const QString& peer, const QString& message);
 
 public slots:
     void textCommandExecuater(QString, QString);
 
-
+signals:
+    void stateBoardcast(QString);
 };
 
 #endif // STATE_WORKER_H
