@@ -22,7 +22,7 @@ public:
         return QString("%1:%2").arg(ws->peerAddress().toString(), QString::number(ws->peerPort()));
     }
 
-private slots:
+public slots:
     void onConnection();
 
     void processTextMessage(const QString& message);
