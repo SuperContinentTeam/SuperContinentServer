@@ -31,14 +31,6 @@ void SuperContinentServer::processTextMessage(const QString &message)
     QString peer = this->get_peer(qobject_cast<QWebSocket*>(sender()));
 
     emit this->sendTextCommand(peer, message);
-
-    // if(!message.compare("#start")) {
-    //     emit this->changeStatus(1);
-    // }else if(!message.compare("#pause")) {
-    //     emit this->changeStatus(2);
-    // }else if(!message.compare("#end")) {
-    //     emit this->changeStatus(0);
-    // }
 }
 
 void SuperContinentServer::socketDisconnected()
@@ -55,6 +47,14 @@ void SuperContinentServer::boardcast(const QString &message)
     qDebug() << "收到信号, 准备广播消息";
     for (auto iterator = this->clientsMap.begin(); iterator != this->clientsMap.end(); iterator++) {
         QWSptr p = iterator.value();
+        p->sendTextMessage(message);
+    }
+}
+
+void SuperContinentServer::sendToPeer(const QString &peer, const QString &message)
+{
+    QWSptr p = this->clientsMap.value(peer, nullptr);
+    if (p != nullptr) {
         p->sendTextMessage(message);
     }
 }

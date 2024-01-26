@@ -16,11 +16,13 @@ void GameState::display(){
     qInfo() << QString("Current tick: %1").arg(this->tick);
 }
 
-
-
-void GameState::playerJoin(QString peer, PlayerPtr player)
+bool GameState::playerJoin(QString peer, PlayerPtr player)
 {
+    if (this->playerMap.size() == this->maxPlayer)
+        return false;
+
     this->playerMap.insert(peer, player);
+    return true;
 }
 
 

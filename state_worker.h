@@ -23,10 +23,11 @@ public:
     void run() override {
         qDebug() << "状态机线程已启动";
         while (true) {
-            if(this->gsPtr->status == GameState::Status::END) break;
-            if(this->gsPtr->status == GameState::Status::RUNING) {
-                this->gsPtr->next_state();
-                this->gsPtr->display();
+            if (gsPtr->status == GameState::Status::END)
+                break;
+            if (gsPtr->status == GameState::Status::RUNING) {
+                gsPtr->next_state();
+                gsPtr->display();
             }
 
             QThread::sleep(1);
@@ -46,7 +47,8 @@ public slots:
     void textCommandExecuater(QString, QString);
 
 signals:
-    void stateBoardcast(QString);
+    void sendToAllPlayer(const QString &message);
+    void sendToOnePlayer(const QString &peer, const QString &message);
 };
 
 #endif // STATE_WORKER_H

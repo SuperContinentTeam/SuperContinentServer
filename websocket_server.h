@@ -30,6 +30,7 @@ public slots:
     void socketDisconnected();
 
     void boardcast(const QString& message);
+    void sendToPeer(const QString &peer, const QString &message);
 
 signals:
     void sendTextCommand(QString, QString);

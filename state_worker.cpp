@@ -56,10 +56,15 @@ void StateWorker::playerAction(const QString &peer, const QJsonObject &body) {
   QString name = body.value("name").toString();
 
   if (action == "join") {
-    PlayerPtr player(new Player(name, peer));
-    this->gsPtr->playerJoin(peer, player);
-
-    qInfo() << QString("Player[%1] join").arg(name);
+      PlayerPtr player(new Player(name, peer));
+      if (gsPtr->status != GameState::Status::INIT) {
+          emit this->sendToOnePlayer(peer, "不能加入已运行的房间");
+      }
+      if (gsPtr->playerJoin(peer, player)) {
+          qInfo() << QString("Player[%1] join").arg(name);
+      } else {
+          emit this->sendToOnePlayer(peer, "房间已满，加入失败");
+      }
   }
 
   if (action == "leave") {
@@ -71,5 +76,5 @@ void StateWorker::playerAction(const QString &peer, const QJsonObject &body) {
 
 void StateWorker::chatMessage(const QString &peer, const QString &message) {
     QString msg = QString("%1 said: %2").arg(peer, message);
-    emit this->stateBoardcast(msg);
+    emit this->sendToAllPlayer(msg);
 }

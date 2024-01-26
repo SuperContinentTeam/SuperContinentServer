@@ -16,6 +16,7 @@ class GameState: public QObject
 public:
     quint32 tick = 0;       // 时间刻
     quint8 worldSize = 0;   // 世界尺寸
+    quint8 maxPlayer = 10;  // 最大玩家数
 
     GameState(quint8);
     ~GameState();
@@ -31,7 +32,7 @@ public:
     void next_state();
     void display();
 
-    void playerJoin(QString peer, PlayerPtr player);
+    bool playerJoin(QString peer, PlayerPtr player);
     void playerLeave(QString peer);
 };
 
