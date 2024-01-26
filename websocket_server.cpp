@@ -53,7 +53,8 @@ void SuperContinentServer::socketDisconnected()
 void SuperContinentServer::boardcast(const QString &message)
 {
     qDebug() << "收到信号, 准备广播消息";
-    for(QWSptr qwsPtr: this->clientsMap.values()) {
-        qwsPtr->sendTextMessage(message);
+    for (auto iterator = this->clientsMap.begin(); iterator != this->clientsMap.end(); iterator++) {
+        QWSptr p = iterator.value();
+        p->sendTextMessage(message);
     }
 }
